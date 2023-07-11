@@ -1,124 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible"
-		content="IE=edge">
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1.0">
-	<title>字数统计r</title>
-
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-			font-family: Verdana, Geneva, Tahoma, sans-serif;
-		}
-
-		.container {
-			width: 100%;
-			height: 100vh;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-		}
-
-		.container h1 {
-			font-size: 25px;
-		}
-
-		.container h3 {
-			font-size: 20px;
-		}
-
-		.heading {
-			border: 2px solid green;
-			padding: 5px;
-			font-weight: 700;
-			text-align: center;
-			width: 400px;
-		}
-
-		#area {
-			height: 200px;
-			width: 400px;
-			resize: none;
-			font-size: 15px;
-			font-weight: 700;
-			padding: 5px;
-			margin-top: 15px;
-			color: green;
-			outline: none;
-			border: 2px solid green;
-		}
-
-		#area:focus {
-			border: 2px solid green;
-			outline: none;
-
-		}
-
-		.result {
-			color: green;
-			font-size: 20px;
-			width: 401px;
-			text-align: center;
-			font-weight: 700;
-			padding: 5px;
-			border: 2px solid green;
-			margin-top: 10px;
-		}
-
-		#word,
-		#char {
-			font-size: 25px;
-			font-weight: bold;
-			text-decoration: underline;
-		}
-	</style>
+    <title>中英文字数统计网站</title>
 </head>
-
 <body>
-	<div class="container">
-		<div class="heading">
-			<h1 style="color:green">字数统计</h1>
-			<h3><b>Word and Character count<b></h3>
-		</div>
-		<textarea id="area"
-				placeholder="在这里输入（Enter your Text Here）">
-		</textarea>
-		<p class="result">
-		<span id="word">0</span> 字数 words
-			<span id="char">0</span> 字符数Characters
-		</p>
-	</div>
-	<script>
-		let area = document.getElementById('area');
-		let char = document.getElementById('char');
-		let word = document.getElementById('word');
-
-		area.addEventListener('input', function () {
-			// count characters
-			let content = this.value;
-			char.textContent = content.length;
-
-			// remove empty spaces from start and end
-			content.trim();
-			console.log(content);
-
-			let wordList = content.split(/\s/);
-
-			// Remove spaces from between words
-			let words = wordList.filter(function (element) {
-				return element != "";
-			});
-
-			// count words
-			word.textContent = words.length;
-		});
-	</script>
+    <h1>中英文字数统计网站</h1>
+    <p>请输入你想要统计的文本：</p>
+    <textarea id="text" rows="10" cols="50"></textarea>
+    <button id="count" onclick="countWords()">统计字数</button>
+    <p id="result"></p>
+    <script>
+        function countWords() {
+            // 获取文本框的内容
+            var text = document.getElementById("text").value;
+            // 去除文本中的空格和换行符
+            text = text.replace(/\s+/g, "");
+            // 定义中文字符的正则表达式
+            var chinese = /[\u4e00-\u9fa5]/g;
+            // 定义英文字符的正则表达式
+            var english = /[a-zA-Z]/g;
+            // 计算中文字符的个数
+            var chineseCount = text.match(chinese) ? text.match(chinese).length : 0;
+            // 计算英文字符的个数
+            var englishCount = text.match(english) ? text.match(english).length : 0;
+            // 显示结果
+            document.getElementById("result").innerHTML = "你输入的文本包含" + chineseCount + "个中文字符和" + englishCount + "个英文字符。";
+        }
+    </script>
 </body>
-
 </html>
