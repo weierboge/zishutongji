@@ -1,42 +1,186 @@
- <html>
+<html>
 <head>
-    <title>在线字数统计</title>
-    <style>
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-    </style>
+<style>
+/*设置body元素的背景色为深蓝色*/
+body {
+  background-color: #001f3f;
+}
+
+/*设置body元素的对齐方式为居中*/
+body {
+  text-align: center;
+}
+
+/*设置h1元素的字体为微软雅黑，颜色为白色，大小为36px*/
+h1 {
+  font-family: "Microsoft YaHei";
+  color: white;
+  font-size: 36px;
+}
+
+/*设置p元素的字体为微软雅黑，颜色为白色，大小为18px*/
+p {
+  font-family: "Microsoft YaHei";
+  color: white;
+  font-size: 18px;
+}
+
+/*设置textarea元素的宽度为80%，高度为200px，边框为2px实线白色，内边距为10px*/
+textarea {
+  width: 80%;
+  height: 200px;
+  border: 2px solid white;
+  padding: 10px;
+}
+
+/*设置button元素的宽度为100px，高度为40px，边框为2px实线白色，背景色为透明，字体为微软雅黑，颜色为白色，大小为18px*/
+button {
+  width: 100px;
+  height: 40px;
+  border: 2px solid white;
+  background-color: transparent;
+  font-family: "Microsoft YaHei";
+  color: white;
+  font-size: 18px;
+}
+
+/*设置span元素的字体为微软雅黑，颜色为白色，大小为24px*/
+span {
+  font-family: "Microsoft YaHei";
+  color: white;
+  font-size: 24px;
+}
+
+/*使用媒体查询，当屏幕宽度小于或等于600px时，应用以下样式*/
+@media (max-width: 600px) {
+  /*设置h1元素的字体大小为24px*/
+  h1 {
+    font-size: 24px;
+  }
+
+  /*设置p元素的字体大小为14px*/
+  p {
+    font-size: 14px;
+  }
+
+  /*设置textarea元素的高度为100px*/
+  textarea {
+    height: 100px;
+  }
+
+  /*设置button元素的宽度为80px，高度为30px，字体大小为14px*/
+  button {
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  /*设置span元素的字体大小为18px*/
+  span {
+    font-size: 18px;
+  }
+}
+</style>
+<script>
+//定义一个函数，用于去除字符串中的空格
+function removeSpaces(str) {
+  //使用正则表达式替换所有空格为空字符串
+  return str.replace(/\s+/g, "");
+}
+
+//定义一个函数，用于去除字符串中的空行
+function removeBlankLines(str) {
+  //使用正则表达式替换所有空行为空字符串
+  return str.replace(/^\s*\n/gm, "");
+}
+
+//定义一个函数，用于获取文本框中的内容
+function getText() {
+  //获取文本框元素
+  var textarea = document.getElementById("textarea");
+  //返回文本框的值
+  return textarea.value;
+}
+
+//定义一个函数，用于设置文本框中的内容
+function setText(str) {
+  //获取文本框元素
+  var textarea = document.getElementById("textarea");
+  //设置文本框的值为str
+  textarea.value = str;
+}
+
+//定义一个函数，用于处理去除空格按钮的点击事件
+function handleRemoveSpaces() {
+  //获取文本框中的内容
+  var text = getText();
+  //调用去除空格函数
+  var newText = removeSpaces(text);
+  //设置文本框中的内容为新的内容
+  setText(newText);
+}
+
+//定义一个函数，用于处理去除空行按钮的点击事件
+function handleRemoveBlankLines() {
+  //获取文本框中的内容
+  var text = getText();
+  //调用去除空行函数
+  var newText = removeBlankLines(text);
+  //设置文本框中的内容为新的内容
+  setText(newText);
+}
+
+//定义一个函数，用于判断一个字符是否是中文字符
+function isChineseChar(char) {
+   //使用正则表达式匹配中文字符范围
+   return /[\u4e00-\u9fa5]/.test(char);
+}
+
+//定义一个函数，用于统计字数并显示在页面上
+function countWords() {
+   //获取文本框中的内容
+   var text = getText();
+   //初始化中文单词数和英文单词数为0
+   var chineseCount = 0;
+   var englishCount = 0;
+   
+   //遍历字符串中的每个字符
+   for (var i = 0; i < text.length; i++) {
+     //获取当前字符
+     var char = text[i];
+     //判断当前字符是否是中文字符
+     if (isChineseChar(char)) {
+       //如果是，增加中文单词数
+       chineseCount++;
+     } else if (char !== " " && char !== "\n") {
+       //如果不是，并且不是空格或换行符，判断是否是英文单词的开始
+       if (i === 0 || text[i - 1] === " " || text[i - 1] === "\n") {
+         //如果是，增加英文单词数
+         englishCount++;
+       }
+     }
+   }
+   
+   //获取显示字数的元素
+   var span = document.getElementById("count");
+   
+    //设置显示字数的元素的内容为字数（格式：你输入的文本包含n个中文字符和n个英文字符，其中n为统计结果）
+    span.textContent = "你输入的文本包含" + chineseCount + "个中文字符和" + englishCount + "个英文字符";
+}
+</script>
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <h1>在线字数统计</h1>
-            <p>请输入你想要统计的文本：</p>
-            <textarea id="text" rows="10" cols="50"></textarea>
-            <button id="count" onclick="countWords()">统计字数</button>
-            <p id="result"></p>
-        </div>
-    </div>
-    <script>
-        function countWords() {
-            // 获取文本框的内容
-            var text = document.getElementById("text").value;
-            // 去除文本中的空格和换行符
-            text = text.replace(/\s+/g, "");
-            // 定义中文字符的正则表达式
-            var chinese = /[\u4e00-\u9fa5]/g;
-            // 定义英文字符的正则表达式
-            var english = /[a-zA-Z]/g;
-            // 计算中文字符的个数
-            var chineseCount = text.match(chinese) ? text.match(chinese).length : 0;
-            // 计算英文字符的个数
-            var englishCount = text.match(english) ? text.match(english).length : 0;
-            // 显示结果
-            document.getElementById("result").innerHTML = "你输入的文本包含" + chineseCount + "个中文字符和" + englishCount + "个英文字符。";
-        }
-    </script>
+<h1>在线统计字数</h1>
+<p>请输入要统计的文字：</p>
+<textarea id="textarea" rows="10" cols="50"></textarea>
+<p><span id="count">你输入的文本包含0个中文字符和0个英文字符</span></p>
+<button id="removeSpaces" onclick="handleRemoveSpaces()">去除空格</button>
+<button id="removeBlankLines" onclick="handleRemoveBlankLines()">去除空行</button>
+<script>
+//获取文本框元素
+var textarea = document.getElementById("textarea");
+//给文本框添加输入事件监听器，每次输入时调用统计字数函数
+textarea.addEventListener("input", countWords);
+</script>
 </body>
 </html>
