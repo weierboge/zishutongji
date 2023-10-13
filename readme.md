@@ -1,1 +1,1 @@
-在线字数统计
+Online Word Count (在线字数统计)
